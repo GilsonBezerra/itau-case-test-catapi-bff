@@ -1,0 +1,1 @@
+ALTER TABLE breeds MODIFY COLUMN description LONGTEXT;

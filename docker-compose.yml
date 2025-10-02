@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: breedsdb
+      MYSQL_USER: catuser
+      MYSQL_PASSWORD: catpass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - cat-network
+
+  cat-api-bff:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cat-api-bff-container
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/breedsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: catuser
+      SPRING_DATASOURCE_PASSWORD: catpass
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "8082:8082"
+    networks:
+      - cat-network
+
+volumes:
+  mysql_data:
+
+networks:
+  cat-network:
+    external: true

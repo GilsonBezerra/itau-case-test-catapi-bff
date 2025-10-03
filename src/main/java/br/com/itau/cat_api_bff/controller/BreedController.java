@@ -35,7 +35,7 @@ public class BreedController {
     }
 
     @GetMapping("/temperament/{temperament}")
-    public ResponseEntity<List<BreedResponse>> getByTemperament(@PathVariable String temperament) {
+    public ResponseEntity<List<BreedResponse>> getBreedByTemperament(@PathVariable String temperament) {
         List<BreedResponse> breeds = breedService.findByTemperament(temperament)
                 .stream()
                 .map(BreedResponse::fromEntity)
@@ -48,7 +48,7 @@ public class BreedController {
     }
 
     @GetMapping("/origin/{origin}")
-    public ResponseEntity<List<BreedResponse>> getByOrigin(@PathVariable String origin) {
+    public ResponseEntity<List<BreedResponse>> getBreedByOrigin(@PathVariable String origin) {
         List<BreedResponse> breeds = breedService.findByOrigin(origin)
                 .stream()
                 .map(BreedResponse::fromEntity)
